@@ -8,6 +8,8 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"unicode"
+	"unicode/utf8"
 )
 
 // Result представляет результат матча
@@ -59,7 +61,7 @@ func (trn *Tournament) CalcRating() Rating {
 		amountF += CountBall[val.Result]
 		result[val.First] = amountF
 		amountS := result[val.Second]
-		amountS+= CountBall[AntonymsBall[val.Result]]
+		amountS += CountBall[AntonymsBall[val.Result]]
 		result[val.Second] = amountS
 	}
 	return result
@@ -110,4 +112,87 @@ func ReadString() string {
 		log.Fatal(err)
 	}
 	return str
+}
+
+// validator проверяет строку на соответствие некоторому условию
+// и возвращает результат проверки
+type Validator func(s string) bool
+
+// digits возвращает true, если s содержит хотя бы одну цифру
+// согласно unicode.IsDigit(), иначе false
+func digits(s string) bool {
+	for _, digit := range s {
+		if unicode.IsDigit(digit) {
+			return true
+		}
+	}
+	return false
+}
+
+// letters возвращает true, если s содержит хотя бы одну букву
+// согласно unicode.IsLetter(), иначе false
+func letters(s string) bool {
+	for _, letter := range s {
+		if unicode.IsLetter(letter) {
+			return true
+		}
+	}
+	return false
+}
+
+// minlen возвращает валидатор, который проверяет, что длина
+// строки согласно utf8.RuneCountInString() - не меньше указанной
+func minlen(length int) Validator {
+	return func(s string) bool {
+		lenS := utf8.RuneCountInString(s)
+		return lenS >= length
+	}
+}
+
+// and возвращает валидатор, который проверяет, что все
+// переданные ему валидаторы вернули true
+func and(funcs ...Validator) Validator {
+	return func(s string) bool {
+		for _, f := range funcs {
+			if !f(s) {
+				return false
+			}
+		}
+		return true
+	}
+}
+
+// or возвращает валидатор, который проверяет, что хотя бы один
+// переданный ему валидатор вернул true
+func or(funcs ...Validator) Validator {
+	return func(s string) bool {
+		for _, f := range funcs {
+			if f(s) {
+				return true
+			}
+		}
+		return false
+	}
+}
+
+// Password содержит строку со значением пароля и валидатор
+type Password struct {
+	value string
+	Validator
+}
+
+// isValid() проверяет, что пароль корректный, согласно
+// заданному для пароля валидатору
+func (p *Password) IsValid() bool {
+	return p.Validator(p.value)
+}
+
+func ChechPas() {
+	var s string
+	fmt.Scan(&s)
+	// валидатор, который проверяет, что пароль содержит буквы и цифры,
+	// либо его длина не менее 10 символов
+	validator := or(and(digits, letters), minlen(10))
+	p := Password{s, validator}
+	fmt.Println(p.IsValid())
 }
