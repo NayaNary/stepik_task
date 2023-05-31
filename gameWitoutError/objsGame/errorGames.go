@@ -1,42 +1,94 @@
 package objsgame
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
-// invalidStepError - ошибка, которая возникает,
+// InvalidStepError - ошибка, которая возникает,
 // когда команда шага не совместима с объектом
-type invalidStepError string
+type InvalidStepError struct {
+	Err     error
+	Command command
+	Object  Thing
+}
 
-// notEnoughObjectsError - ошибка, которая возникает,
+func (ilse InvalidStepError) Error() string {
+	return ilse.Err.Error()
+}
+
+func (ilse InvalidStepError) Unwrap() error {
+	return ilse.Err
+}
+
+// NotEnoughObjectsError - ошибка, которая возникает,
 // когда в игре закончились объекты определенного типа
-type notEnoughObjectsError string
+type NotEnoughObjectsError struct {
+	Err    error
+	Object Thing
+}
 
-// commandLimitExceededError - ошибка, которая возникает,
+func (neoe NotEnoughObjectsError) Error() string {
+	return neoe.Err.Error()
+}
+
+func (ilse NotEnoughObjectsError) Unwrap() error {
+	return ilse.Err
+}
+
+// CommandLimitExceededError - ошибка, которая возникает,
 // когда игрок превысил лимит на выполнение команды
-type commandLimitExceededError string
+type CommandLimitExceededError struct {
+	Err error
+}
 
-// objectLimitExceededError - ошибка, которая возникает,
+func (clee CommandLimitExceededError) Error() string {
+	return clee.Err.Error()
+}
+
+func (ilse CommandLimitExceededError) Unwrap() error {
+	return ilse.Err
+}
+
+// ObjectLimitExceededError - ошибка, которая возникает,
 // когда игрок превысил лимит на количество объектов
 // определенного типа в инвентаре
-type objectLimitExceededError string
+type ObjectLimitExceededError struct {
+	Err error
+}
 
-// gameOverError - ошибка, которая произошла в игре
-type gameOverError struct {
+func (olee ObjectLimitExceededError) Error() string {
+	return olee.Err.Error()
+}
+
+func (ilse ObjectLimitExceededError) Unwrap() error {
+	return ilse.Err
+}
+
+// GameOverError - ошибка, которая произошла в игре
+type GameOverError struct {
 	// количество шагов, успешно выполненных
 	// до того, как произошла ошибка
-	nSteps int
-	err    error
-	// ...
+	NSteps int
+	Err    error
 }
 
-func (goe gameOverError) Error() string {
-	return fmt.Sprintf("on strp %d error: %v", goe.nSteps, goe.err)
+func (goe GameOverError) Error() string {
+	return goe.Err.Error()
 }
 
-func (le gameOverError) Unwrap() error {
-	return le.err
+func (goe GameOverError) Unwrap() error {
+	return goe.Err
 }
 
-func giveAdvice(err error) string {
-	// ...
+func GiveAdvice(err error) string {
+	var ise InvalidStepError
+	if errors.As(err, &ise) {
+		return fmt.Sprintf("things like '%s %s' are impossible", ise.Command, ise.Object.Name)
+	}
+	var neoe NotEnoughObjectsError
+	if errors.As(err, &neoe) {
+		return fmt.Sprintf("be careful with scarce %s", neoe.Object.Name)
+	}
 	return ""
 }

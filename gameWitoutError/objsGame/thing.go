@@ -1,36 +1,36 @@
 package objsgame
 
-// thing - объект, который существует в игре
-type thing struct {
-    name    label
-    actions map[command]string
+// Thing - объект, который существует в игре
+type Thing struct {
+	Name    label
+	Actions map[command]string
 }
 
 // supports() возвращает true, если объект
 // поддерживает команду action
-func (t thing) supports(action command) bool {
-    _, ok := t.actions[action]
-    return ok
+func (t Thing) supports(action command) bool {
+	_, ok := t.Actions[action]
+	return ok
 }
 
 // полный список объектов в игре
 var (
-    apple = thing{"apple", map[command]string{
-        eat:  "mmm, delicious!",
-        take: "you have an apple now",
-    }}
-    bob = thing{"bob", map[command]string{
-        talk: "Bob says hello",
-    }}
-    coin = thing{"coin", map[command]string{
-        take: "you have a coin now",
-    }}
-    mirror = thing{"mirror", map[command]string{
-        take: "you have a mirror now",
-        talk: "mirror does not answer",
-    }}
-    mushroom = thing{"mushroom", map[command]string{
-        eat:  "tastes funny",
-        take: "you have a mushroom now",
-    }}
+	Apple = Thing{"apple", map[command]string{
+		Eat:  "mmm, delicious!",
+		Take: "you have an apple now",
+	}}
+	Bob = Thing{"bob", map[command]string{
+		Talk: "Bob says hello",
+	}}
+	Coin = Thing{"coin", map[command]string{
+		Take: "you have a coin now",
+	}}
+	Mirror = Thing{"mirror", map[command]string{
+		Take: "you have a mirror now",
+		Talk: "mirror does not answer",
+	}}
+	Mushroom = Thing{"mushroom", map[command]string{
+		Eat:  "tastes funny",
+		Take: "you have a mushroom now",
+	}}
 )

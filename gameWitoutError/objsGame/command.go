@@ -8,7 +8,7 @@ type command label
 
 // список доступных команд
 var (
-    eat  = command("eat")
-    take = command("take")
-    talk = command("talk to")
+    Eat  = command("eat")
+    Take = command("take")
+    Talk = command("talk to")
 )
