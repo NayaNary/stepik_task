@@ -49,10 +49,9 @@ func (g *Game) Execute(st Step) error {
 		if !g.has(st.Obj) {
 			return GameOverError{
 				NSteps: g.nSteps,
-				Err: InvalidStepError{
-					Err:     fmt.Errorf("there are no %ss left", st.Obj),
-					Command: st.Cmd,
-					Object:  st.Obj},
+				Err: NotEnoughObjectsError{
+					Err:    fmt.Errorf("there are no %ss left", st.Obj.Name),
+					Object: st.Obj},
 			}
 		}
 		g.things[st.Obj.Name]--

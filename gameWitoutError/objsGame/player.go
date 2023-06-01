@@ -38,26 +38,26 @@ func (p *player) do(cmd command, obj Thing) error {
 	switch cmd {
 	case Eat:
 		if p.nEaten > 1 {
-			return InvalidStepError{
+			return CommandLimitExceededError{
 				Err:     errors.New("you don't want to eat anymore"),
 				Command: cmd,
-				Object:  obj}
+			}
 		}
 		p.nEaten++
 	case Take:
 		if p.has(obj) {
-			return InvalidStepError{
+			return ObjectLimitExceededError{
 				Err:     fmt.Errorf("you already have a %s", obj),
-				Command: cmd,
+				Limit: len(p.inventory),
 				Object:  obj}
 		}
 		p.inventory = append(p.inventory, obj)
 	case Talk:
 		if p.nDialogs > 0 {
-			return InvalidStepError{
+			return  CommandLimitExceededError  {
 				Err:     errors.New("you don't want to talk anymore"),
 				Command: cmd,
-				Object:  obj}
+			}
 		}
 		p.nDialogs++
 	}

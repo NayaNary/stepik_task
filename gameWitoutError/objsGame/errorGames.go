@@ -40,6 +40,8 @@ func (ilse NotEnoughObjectsError) Unwrap() error {
 // когда игрок превысил лимит на выполнение команды
 type CommandLimitExceededError struct {
 	Err error
+	Command command
+	// Object  Thing
 }
 
 func (clee CommandLimitExceededError) Error() string {
@@ -55,6 +57,8 @@ func (ilse CommandLimitExceededError) Unwrap() error {
 // определенного типа в инвентаре
 type ObjectLimitExceededError struct {
 	Err error
+	Limit int
+	Object  Thing
 }
 
 func (olee ObjectLimitExceededError) Error() string {
@@ -88,7 +92,15 @@ func GiveAdvice(err error) string {
 	}
 	var neoe NotEnoughObjectsError
 	if errors.As(err, &neoe) {
-		return fmt.Sprintf("be careful with scarce %s", neoe.Object.Name)
+		return fmt.Sprintf("be careful with scarce %ss", neoe.Object.Name)
+	}
+	var clee CommandLimitExceededError
+	if errors.As(err, &clee) {
+		return fmt.Sprintf("%s less", clee.Command)
+	}
+	var olee ObjectLimitExceededError
+	if errors.As(err, &olee) {
+		return fmt.Sprintf("don't be greedy, %d %s is enough", olee.Limit, olee.Object.Name)
 	}
 	return ""
 }

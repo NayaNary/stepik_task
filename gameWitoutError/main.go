@@ -13,9 +13,14 @@ func main() {
 	// 	{objsgame.Talk, objsgame.Bob},
 	// 	{objsgame.Take, objsgame.Coin},
 	// 	{obj
+	// steps := []objsgame.Step{
+	// 	{objsgame.Talk, objsgame.Bob},
+	// 	{objsgame.Talk, objsgame.Bob},
+	// }
+
 	steps := []objsgame.Step{
-		{objsgame.Talk, objsgame.Bob},
-		{objsgame.Talk, objsgame.Bob},
+		{objsgame.Take, objsgame.Mirror},
+		{objsgame.Take, objsgame.Mirror},
 	}
 
 	for _, st := range steps {
