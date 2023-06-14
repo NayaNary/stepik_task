@@ -71,3 +71,26 @@ func TestSum(t *testing.T) {
 		})
 	}
 }
+
+func TestSumFew(t *testing.T) {
+	if tests.Sum(1, 2, 3, 4, 5) != 15 {
+		t.Errorf("Expected Sum(1, 2, 3, 4, 5) == 15")
+	}
+}
+
+func TestSumN(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode.")
+	}
+
+	n := 1_000_000_000
+	nums := make([]int, n)
+	for i := 0; i < n; i++ {
+		nums[i] = i + 1
+	}
+	got := tests.Sum(nums...)
+	want := n * (n + 1) / 2
+	if got != want {
+		t.Errorf("Expected sum[i=1..n](i) == n*(n+1)/2")
+	}
+}

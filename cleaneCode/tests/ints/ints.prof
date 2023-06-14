@@ -1,0 +1,7 @@
+mode: set
+tests/ints.go:4.27,5.14 1 1
+tests/ints.go:5.14,7.6 1 1
+tests/ints.go:8.5,8.13 1 1
+tests/ints.go:11.27,13.30 2 1
+tests/ints.go:13.30,15.6 1 1
+tests/ints.go:16.5,16.17 1 1
