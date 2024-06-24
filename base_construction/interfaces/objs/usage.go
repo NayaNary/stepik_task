@@ -1,6 +1,6 @@
 package objs
 
-import "stepik_task/baseConstruction/interfaces"
+import "stepik_task/base_construction/interfaces"
 
 type usage struct {
 	service string

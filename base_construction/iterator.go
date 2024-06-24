@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"stepik_task/baseConstruction/interfaces"
+	"stepik_task/base_construction/interfaces"
 	"strconv"
 )
 

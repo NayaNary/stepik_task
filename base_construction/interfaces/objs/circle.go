@@ -2,7 +2,7 @@ package objs
 
 import (
 	"math"
-	"stepik_task/baseConstruction/interfaces"
+	"stepik_task/base_construction/interfaces"
 )
 
 type circle struct {
@@ -10,7 +10,7 @@ type circle struct {
 }
 
 func NewCircle(r float64) interfaces.Geometry {
-	return &circle{radius:r}
+	return &circle{radius: r}
 }
 
 func (c *circle) Area() float64 {

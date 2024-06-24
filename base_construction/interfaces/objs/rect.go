@@ -1,7 +1,7 @@
 package objs
 
 import (
-	"stepik_task/baseConstruction/interfaces"
+	"stepik_task/base_construction/interfaces"
 )
 
 type rect struct {
